@@ -16,13 +16,13 @@ class ImageSaver {
   /// [name] is optional image file name (Android only, you can't name image files on iOS)
   /// [directoryName] is optional directory name. If [null] then saves in default directory
   /// Returns [true] if successfully saved, [false] if failed or user cancelled action
-  Future<bool> saveImage({
+  Future<dynamic> saveImage({
     @required Uint8List imageBytes,
     String imageName,
     String directoryName,
   }) async {
     try {
-      final bool result = await _platform.invokeMethod(
+      final dynamic result = await _platform.invokeMethod(
         _saveImageMethodKey,
         {
           "imageBytes": imageBytes,
@@ -40,7 +40,7 @@ class ImageSaver {
   /// All images in [imageBytes] list will be saved with auto generated names
   /// Returns [true] if all images were successfully saved, [false] if any failed or user cancelled action
   /// [directoryName] is optional directory name. If [null] then saves in default directory
-  Future<bool> saveImages({
+  Future<dynamic> saveImages({
     @required List<Uint8List> imageBytes,
     String directoryName,
   }) async {
@@ -49,7 +49,7 @@ class ImageSaver {
       "imageBytes must not be null and must not be empty",
     );
     try {
-      final bool result = await _platform.invokeMethod(
+      final dynamic result = await _platform.invokeMethod(
         _saveImagesMethodKey,
         {
           "directoryName": directoryName,
