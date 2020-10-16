@@ -19,6 +19,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
+import android.media.MediaScannerConnection
 
 class SaveInGalleryPlugin(
     private val context: Activity
@@ -32,7 +33,7 @@ class SaveInGalleryPlugin(
         private const val SAVE_IMAGES_METHOD_KEY = "saveImagesKey"
         private const val SAVE_NAMED_IMAGES_METHOD_KEY = "saveNamedImagesKey"
         private const val STORAGE_PERMISSION_REQUEST = 3
-        private const val IMAGE_FILE_EXTENSION = "PNG"
+        private const val IMAGE_FILE_EXTENSION = "jpg"
 
         @JvmStatic
         fun registerWith(registrar: Registrar) {
@@ -111,9 +112,11 @@ class SaveInGalleryPlugin(
 
         try {
             FileOutputStream(File(directory, formattedName)).use { out ->
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
             }
-            request.result.success(true)
+            MediaScannerConnection.scanFile(context,
+                    arrayOf(imageFile.toString()), null, null)
+            request.result.success(formattedName)
         } catch (e: IOException) {
             request.result.error("ERROR", "Error while saving image into file: ${e.message}", null)
         }
@@ -155,8 +158,10 @@ class SaveInGalleryPlugin(
 
             try {
                 FileOutputStream(File(directory, formattedName)).use { out ->
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
                 }
+                MediaScannerConnection.scanFile(context,
+                        arrayOf(imageFile.toString()), null, null)
             } catch (e: IOException) {
                 request.result.error(
                     "ERROR",
@@ -205,8 +210,10 @@ class SaveInGalleryPlugin(
 
             try {
                 FileOutputStream(File(directory, formattedName)).use { out ->
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
                 }
+                 MediaScannerConnection.scanFile(context,
+                        arrayOf(imageFile.toString()), null, null)
             } catch (e: IOException) {
                 request.result.error(
                     "ERROR",
